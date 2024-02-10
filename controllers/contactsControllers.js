@@ -1,7 +1,5 @@
 const { Contact } = require("../models/contact.js");
 
-const contactsService = require("../services/contactsServices.js");
-
 const HttpError = require("../helpers/HttpError.js");
 
 const {
