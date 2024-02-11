@@ -1,8 +1,11 @@
 const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const { User } = require("../models/user");
 const HttpError = require("../helpers/HttpError.js");
 const ctrlWrapper = require("../helpers/ctrlWrapper.js");
+const { SECRET } = process.env;
 
 const register = async (req, res) => {
   const { email, password } = req.body;
@@ -32,7 +35,10 @@ const login = async (req, res) => {
   if (!passwordCompare) {
     throw HttpError(401, "Email or password is wrong");
   }
-  const token = "";
+
+  const layload = { id: user._id };
+  const token = jwt.sign(layload, SECRET, { expiresIn: "1h" });
+  await User.findByIdAndUpdate(user._id, { token });
 
   res.json({
     token: token,
@@ -43,7 +49,20 @@ const login = async (req, res) => {
   });
 };
 
+const getCurrent = async (req, res) => {
+  const { email, subscription } = req.user;
+  res.json({ email, subscription });
+};
+
+const logout = async (req, res) => {
+  const { _id } = req.user;
+  await User.findByIdAndUpdate(_id, { token: "" });
+  res.status(204);
+};
+
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
+  getCurrent: ctrlWrapper(getCurrent),
+  logout: ctrlWrapper(logout),
 };
