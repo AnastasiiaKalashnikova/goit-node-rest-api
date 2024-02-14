@@ -9,7 +9,6 @@ const Jimp = require("jimp");
 const { User } = require("../models/user");
 const HttpError = require("../helpers/HttpError.js");
 const ctrlWrapper = require("../helpers/ctrlWrapper.js");
-const { error } = require("console");
 const { SECRET } = process.env;
 
 const avatarDir = path.join(__dirname, "../", "public", "avatars");
