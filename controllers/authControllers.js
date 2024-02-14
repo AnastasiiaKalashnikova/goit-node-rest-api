@@ -77,15 +77,15 @@ const updateAvatar = async (req, res) => {
   const { _id } = req.user;
   const { path: tempUpload, originalname } = req.file;
 
-  const uniqueFileName = `${_id}_${originalname}`;
-  const resultUpload = path.join(avatarDir, uniqueFileName);
-  Jimp.read(tempUpload)
+  await Jimp.read(tempUpload)
     .then((img) => {
-      img.cover(250, 250).write(resultUpload);
+      img.cover(250, 250).write(tempUpload);
     })
     .catch(() => {
       throw HttpError;
     });
+  const uniqueFileName = `${_id}_${originalname}`;
+  const resultUpload = path.join(avatarDir, uniqueFileName);
   await fs.rename(tempUpload, resultUpload);
   const avatarUrl = path.join("avatars", uniqueFileName);
 
