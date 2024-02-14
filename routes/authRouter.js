@@ -7,8 +7,11 @@ const {
   login,
   getCurrent,
   logout,
+  updateAvatar,
 } = require("../controllers/authControllers.js");
 const authenticate = require("../helpers/authenticate");
+
+const upload = require("../helpers/upload.js");
 
 const userRouter = express.Router();
 
@@ -19,5 +22,12 @@ userRouter.post("/login", validateBody(loginSchema), login);
 userRouter.get("/current", authenticate, getCurrent);
 
 userRouter.post("/logout", authenticate, logout);
+
+userRouter.patch(
+  "/avatars",
+  authenticate,
+  upload.single("avatarUrl"),
+  updateAvatar
+);
 
 module.exports = userRouter;
