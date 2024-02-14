@@ -87,11 +87,11 @@ const updateAvatar = async (req, res) => {
   const uniqueFileName = `${_id}_${originalname}`;
   const resultUpload = path.join(avatarDir, uniqueFileName);
   await fs.rename(tempUpload, resultUpload);
-  const avatarUrl = path.join("avatars", uniqueFileName);
+  const avatarURL = path.join("avatars", uniqueFileName);
 
-  await User.findByIdAndUpdate(_id, { avatarUrl });
+  await User.findByIdAndUpdate(_id, { avatarURL });
 
-  res.json({ avatarUrl });
+  res.json({ avatarURL });
 };
 
 module.exports = {
